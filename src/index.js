@@ -1,44 +1,39 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 
-function CreateList(props) {
- const arr = props.arr;
-	const list = arr.map((i) => <li>{i}</li>);
-	return list;
-}
-function ShowList(props) {
-	if (props.state) {
-		return (
-			<CreateList arr={[1,2,3,4,5,6,7]}/>
-		)
+
+function BoilingVerdict(props) {
+	if (props.celsius >= 100) {
+		return <p>Вода закипит</p>
 	}
-	return null;
+	return <p>Вода не закипит</p>
 }
-class RenderList extends React.Component {
+
+class Calculator extends React.Component {
 	constructor(props) {
 		super(props);
-		this.state = {showList: false};
-		this.RenderListBtn = this.RenderListBtn.bind(this);
-	}
-	RenderListBtn() {
-		this.setState(state => ({
-			showList: !state.showList
-		}))
-	}
+		this.hundleChange = this.hundleChange.bind(this);
+		this.state = {temperature: ''}
 
+	}
+	hundleChange(e) {
+		this.setState({temperature: e.target.value})
+	}
 	render() {
+		const temperature = this.state.temperature;
 		return (
-			<div>
-				<button onClick={this.RenderListBtn}>{this.state.showList ? 'Hide' : 'Show'}</button>
-				<ul>
-					<ShowList state={this.state.showList}/>
-				</ul>
-			</div>
+			<fieldset>
+				<legend>Введите температуру воды в Цельсиях</legend>
+				<input onChange={this.hundleChange} value={temperature}/>
+
+				<BoilingVerdict celsius={parseFloat(temperature)}/>
+
+			</fieldset>
 		)
 	}
 }
-  
+
   ReactDOM.render(
-	<RenderList />,
-	document.getElementById('root')
-  );
+	  <Calculator />,
+	  document.getElementById('root')
+  )
