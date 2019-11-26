@@ -1,39 +1,52 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 
-
-function BoilingVerdict(props) {
-	if (props.celsius >= 100) {
-		return <p>Вода закипит</p>
-	}
-	return <p>Вода не закипит</p>
-}
-
-class Calculator extends React.Component {
+function Dialog(props) {
+	return (
+	  <FancyBorder color="blue">
+		<h1 className="Dialog-title">
+		  {props.title}
+		</h1>
+		<p className="Dialog-message">
+		  {props.message}
+		</p>
+		{props.children}
+	  </FancyBorder>
+	);
+  }
+  
+  class SignUpDialog extends React.Component {
 	constructor(props) {
-		super(props);
-		this.hundleChange = this.hundleChange.bind(this);
-		this.state = {temperature: ''}
-
+	  super(props);
+	  this.handleChange = this.handleChange.bind(this);
+	  this.handleSignUp = this.handleSignUp.bind(this);
+	  this.state = {login: ''};
 	}
-	hundleChange(e) {
-		this.setState({temperature: e.target.value})
-	}
+  
 	render() {
-		const temperature = this.state.temperature;
-		return (
-			<fieldset>
-				<legend>Введите температуру воды в Цельсиях</legend>
-				<input onChange={this.hundleChange} value={temperature}/>
-
-				<BoilingVerdict celsius={parseFloat(temperature)}/>
-
-			</fieldset>
-		)
+	  return (
+		<Dialog title="Программа исследования Марса"
+				message="Как к вам обращаться?">
+		  <input value={this.state.login}
+				 onChange={this.handleChange} />
+  
+		  <button onClick={this.handleSignUp}>
+			Запишите меня!
+		  </button>
+		</Dialog>
+	  );
 	}
-}
+  
+	handleChange(e) {
+	  this.setState({login: e.target.value});
+	}
+  
+	handleSignUp() {
+	  alert(`Добро пожаловать на борт, ${this.state.login}!`);
+	}
+  }
 
   ReactDOM.render(
-	  <Calculator />,
+	  <SignUpDialog />,
 	  document.getElementById('root')
   )
